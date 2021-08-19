@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_19_031710) do
+ActiveRecord::Schema.define(version: 2021_08_19_081442) do
+
+  create_table "likes", force: :cascade do |t|
+    t.integer "order_id", null: false
+    t.integer "requester_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["order_id"], name: "index_likes_on_order_id"
+    t.index ["requester_id"], name: "index_likes_on_requester_id"
+  end
 
   create_table "orders", force: :cascade do |t|
     t.string "title"
@@ -33,4 +42,6 @@ ActiveRecord::Schema.define(version: 2021_08_19_031710) do
     t.index ["reset_password_token"], name: "index_requesters_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "likes", "orders"
+  add_foreign_key "likes", "requesters"
 end

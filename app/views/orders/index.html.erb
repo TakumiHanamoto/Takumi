@@ -1,6 +1,6 @@
 <h1>Srental</h1>
 <h3>依頼一覧</h3>
-<%= button_to "orders_new", orders_new_path %>
+<%= button_to "new_order", new_order_path %>
 
 <br>
 <%= page_entries_info @orders %>
@@ -11,6 +11,21 @@
     <%= o.title %>
     <%= o.body %>
     <%= o.created_at %>
+
+    <% if requester_signed_in? %>
+    <% if current_requester.already_liked?(o) %>
+        <%= link_to order_like_path(id: o.id, order_id: o.id), method: :delete do %>
+            <i class="fas fa-heart"></i><%= o.likes.count %>
+        <% end %>
+    <% else %>
+        <%= link_to order_likes_path(id: o.id, order_id: o.id), method: :post do %>
+            <i class="far fa-heart"></i><%= o.likes.count %>
+        <% end %>
+    <% end %>
+<% else %>
+<i class="far fa-heart"></i><%= o.likes.count %>
+<% end %>
+
     <%= image_tag o.image_url, size: "250x200" if o.image? %>
     <%= button_to "Details", order_path(o.id) %>
     <%= button_to "Edit", edit_order_path(o.id) %>

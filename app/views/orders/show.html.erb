@@ -6,6 +6,24 @@
     <p><%= @order.body %></p>
     <p><%= @order.created_at %></p>
     <%= link_to "Edit", edit_order_path(@order.id) %>
+
+    <% if requester_signed_in? %>
+    <% if current_requester.already_liked?(@order) %>
+        <%= link_to order_like_path(@order), method: :delete do %>
+        <i class="far fa-heart"></i><%= @order.likes.count %>
+        <% end %>
+    <% else %>
+        <%= link_to order_likes_path(@order), method: :post do %>
+        <i class="far fa-heart"></i><%= @order.likes.count %>
+        <% end %>
+    <% end %>
+<% else %>
+<i class="far fa-heart"></i><%= @order.likes.count %>
+<% end %>
 </div>
 
+<h2>Requester you're liked </h2>
+<% @order.liked_requesters.each do |requester| %>
+  <li><%= requester.email %></li>
+<% end %>
 <%= link_to "orders", orders_path %>
