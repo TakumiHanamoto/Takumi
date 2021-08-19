@@ -1,0 +1,17 @@
+<h1>Srental</h1>
+<h3>依頼一覧</h3>
+<%= button_to "orders_new", orders_new_path %>
+<div class="orders-container">
+<% @orders.each do |o| %>
+    <div class="order">
+    <%= o.requester.email %>
+    <%= o.title %>
+    <%= o.body %>
+    <%= o.created_at %>
+    <%= button_to "Details", order_path(o.id) %>
+    <%= button_to "Edit", edit_order_path(o.id) %>
+    <%= button_to "Delete", order_path(o.id), method: :delete %>
+    </div>
+<% end %>
+</div>
+<%= button_to 'Logout', destroy_requester_session_path, method: :delete %>

@@ -1,0 +1,11 @@
+<h1>Srental</h1>
+<h3>Details</h3>
+<div class="order">
+    <p><%= @order.id %></p>
+    <p><%= @order.title %></p>
+    <p><%= @order.body %></p>
+    <p><%= @order.created_at %></p>
+    <%= link_to "Edit", edit_order_path(@order.id) %>
+</div>
+
+<%= link_to "orders", orders_path %>

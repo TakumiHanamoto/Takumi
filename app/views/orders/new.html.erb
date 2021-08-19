@@ -1,0 +1,12 @@
+<h1>Srental</h1>
+<h3>新規依頼</h3>
+<%= form_for @order do |f| %>
+<div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title, :size => 160 %>
+    <%= f.label :body %>
+    <%= f.text_area :body, :size => "50x20" %>
+</div>
+<%= f.submit "order_button" %>
+<% end %>
+<%= link_to "order", orders_path %>
