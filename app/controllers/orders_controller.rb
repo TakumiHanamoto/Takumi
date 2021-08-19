@@ -4,6 +4,15 @@ class OrdersController < ApplicationController
 
     def index
         @orders = Order.all
+        if params[:search] == nil
+            @orders= Order.all.page(params[:page]).per(10)
+        elsif params[:search] == ''
+            @orders= Order.all.page(params[:page]).per(10)
+        elsif params[:search] == 'order.id'
+            @orders= Order.where(id, params[:search]).page(params[:page]).per(10)
+        else
+            @orders = Order.where("body LIKE ? ",'%' + params[:search] + '%')
+        end
     end
 
     def new
@@ -45,6 +54,6 @@ class OrdersController < ApplicationController
     
     private
     def order_params
-        params.require(:order).permit(:body, :title)
+        params.require(:order).permit(:body, :title, :image)
     end
 end
