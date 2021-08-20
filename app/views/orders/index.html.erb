@@ -6,7 +6,7 @@
 <%= page_entries_info @orders %>
 <div class="orders-container">
 <% @orders.each do |o| %>
-    <div class="order">
+<div class="order">
     <%= o.requester.email %>
     <%= o.title %>
     <%= o.body %>
@@ -15,26 +15,26 @@
     <% if requester_signed_in? %>
     <% if current_requester.already_liked?(o) %>
         <%= link_to order_like_path(id: o.id, order_id: o.id), method: :delete do %>
-            <i class="fas fa-heart"></i><%= o.likes.count %>
+            <p>Cancell Like</p></i><%= o.likes.count %>
         <% end %>
     <% else %>
         <%= link_to order_likes_path(id: o.id, order_id: o.id), method: :post do %>
-            <i class="far fa-heart"></i><%= o.likes.count %>
+            <p>Like</p></i><%= o.likes.count %>
         <% end %>
     <% end %>
-<% else %>
-<i class="far fa-heart"></i><%= o.likes.count %>
-<% end %>
+    <% else %>
+        <p>Count of Like = </p></i><%= o.likes.count %>
+    <% end %>
 
     <%= image_tag o.image_url, size: "250x200" if o.image? %>
 
-    <% if user_signed_in? && current_user.id == t.user_id %>
+    <% if requester_signed_in? && current_requester.id == o.requester_id %>
         <%= button_to "Details", order_path(o.id) %>
         <%= button_to "Edit", edit_order_path(o.id) %>
     <% end %> 
 
     <%= button_to "Delete", order_path(o.id), method: :delete %>
-    </div>
+</div>
 <% end %>
 </div>
 <%= paginate @orders %>

@@ -10,15 +10,15 @@
     <% if requester_signed_in? %>
     <% if current_requester.already_liked?(@order) %>
         <%= link_to order_like_path(@order), method: :delete do %>
-        <i class="far fa-heart"></i><%= @order.likes.count %>
+            <p>Cancell Like</p><%= @order.likes.count %>
         <% end %>
     <% else %>
         <%= link_to order_likes_path(@order), method: :post do %>
-        <i class="far fa-heart"></i><%= @order.likes.count %>
+            <p>Like</p><%= @order.likes.count %>
         <% end %>
     <% end %>
 <% else %>
-<i class="far fa-heart"></i><%= @order.likes.count %>
+<p>Count of Like = </p><%= @order.likes.count %>
 <% end %>
 </div>
 
