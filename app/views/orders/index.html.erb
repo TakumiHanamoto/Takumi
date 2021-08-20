@@ -27,8 +27,12 @@
 <% end %>
 
     <%= image_tag o.image_url, size: "250x200" if o.image? %>
-    <%= button_to "Details", order_path(o.id) %>
-    <%= button_to "Edit", edit_order_path(o.id) %>
+
+    <% if user_signed_in? && current_user.id == t.user_id %>
+        <%= button_to "Details", order_path(o.id) %>
+        <%= button_to "Edit", edit_order_path(o.id) %>
+    <% end %> 
+
     <%= button_to "Delete", order_path(o.id), method: :delete %>
     </div>
 <% end %>

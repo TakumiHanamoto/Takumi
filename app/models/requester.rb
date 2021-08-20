@@ -5,6 +5,8 @@ class Requester < ApplicationRecord
         :recoverable, :rememberable, :validatable
 
   has_many :orders, dependent: :destroy
+  validates :name, presence: true
+  validates :profile, length: { maximum: 200 }
   has_many :likes, dependent: :destroy
   has_many :liked_orders, through: :likes, source: :order
 
