@@ -39,4 +39,9 @@
 </div>
 <%= paginate @orders %>
 <br><br>
+
+<% if requester_signed_in? %>
 <%= button_to 'Logout', destroy_requester_session_path, method: :delete %>
+<% elsif student_signed_in? %>
+<%= button_to 'Logout', destroy_student_session_path, method: :delete %>
+<% end %>
