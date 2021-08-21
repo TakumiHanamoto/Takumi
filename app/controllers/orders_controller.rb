@@ -1,7 +1,6 @@
 class OrdersController < ApplicationController
     
     before_action :authenticate_requester!
-    before_action :authenticate_student!
 
     def index
         @orders = Order.all
