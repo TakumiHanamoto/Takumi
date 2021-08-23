@@ -38,5 +38,12 @@
 <% end %>
 </div>
 <%= paginate @orders %>
+
 <br><br>
-<%= button_to 'Logout', destroy_requester_session_path, method: :delete %>
+<% if requester_signed_in? %>
+<%= button_to 'Logout for requesters', destroy_requester_session_path, method: :delete %>
+<% elsif student_signed_in? %>
+<%= button_to 'Logout for students', destroy_student_session_path, method: :delete %>
+<% else %>
+Are you an Admin?
+<% end %>
