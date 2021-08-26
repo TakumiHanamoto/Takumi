@@ -4,8 +4,9 @@ Rails.application.routes.draw do
   get 'requesters/index'
   get 'requesters/show'
   devise_for :students
+  resources :students, only: [:show]
   devise_for :requesters
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  resources :requesters, only: [:show]
   root 'hello#index'
   get 'hello/index' => 'hello#index'
   get 'hello/link' => 'hello#link'

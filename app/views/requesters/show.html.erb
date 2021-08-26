@@ -1,2 +1,22 @@
-<h1>Requesters#show</h1>
-<p>Find me in app/views/requesters/show.html.erb</p>
+<h1>requester#show</h1>
+<p>名前 : <%= @requester.name %></p>
+<p>メールアドレス : <%= @requester.email %></p>
+<p>プロフィール : <%= @requester.profile %></p>
+
+<% if current_requester.id == @requester.id %>
+  <%= link_to "編集する", edit_requester_registration_path %>
+<% end %>
+
+<h2>ユーザーの投稿一覧</h2>
+<% @requester.orders.each do |t| %>
+  <%= t.requester.name %>
+  <%= t.body %>
+<% end %>
+
+<h2>ユーザーがいいねした投稿一覧</h2>
+<% @requester.liked_orders.each do |t| %>
+  <%= t.requester.name %>
+  <%= t.body %>
+<% end %>
+
+<%= link_to "Order一覧に戻る", orders_path %>

@@ -12,7 +12,6 @@ devise :database_authenticatable, :registerable,
   has_many :messages, dependent: :destroy
   has_many :entries, dependent: :destroy
 
-
   def already_liked?(order)
     self.likes.exists?(order_id: order.id)
   end

@@ -1,2 +1,22 @@
-<h1>Students#show</h1>
-<p>Find me in app/views/students/show.html.erb</p>
+<h1>student#show</h1>
+<p>名前 : <%= @student.name %></p>
+<p>メールアドレス : <%= @student.email %></p>
+<p>プロフィール : <%= @student.profile %></p>
+
+<% if current_student.id == @student.id %>
+  <%= link_to "編集する", edit_student_registration_path %>
+<% end %>
+
+<h2>ユーザーの投稿一覧</h2>
+<% @student.orders.each do |t| %>
+  <%= t.student.name %>
+  <%= t.body %>
+<% end %>
+
+<h2>ユーザーがいいねした投稿一覧</h2>
+<% @student.liked_orders.each do |t| %>
+  <%= t.student.name %>
+  <%= t.body %>
+<% end %>
+
+<%= link_to "Order一覧に戻る", orders_path %>
