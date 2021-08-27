@@ -19,4 +19,19 @@
   <%= t.body %>
 <% end %>
 
+<% if @student.id == current_student.id %>
+
+<% else %>
+  <% if @isRoom == true %>
+    <p><a href="/rooms/<%= @roomId %>">チャットへ</a>
+  <% else %>
+    <%= form_for @room do |f| %>
+      <%= fields_for @entry do |e| %>
+        <%= e.hidden_field :student_id, :value=> @student.id %>
+      <% end %>
+      <%= f.submit "チャットを始める" %>
+    <% end %>
+  <% end %>
+<% end %>
+
 <%= link_to "Order一覧に戻る", orders_path %>

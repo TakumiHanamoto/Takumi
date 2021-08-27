@@ -23,5 +23,8 @@
     <%= f.submit "投稿する" %>
 <% end %>
 
+<% if requester_signed_in? %>
 <%= link_to "ユーザー一覧に戻る", requesters_path %>
+<% elsif student_signed_in? %>
 <%= link_to "ユーザー一覧に戻る", students_path %>
+<% end %>
