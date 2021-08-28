@@ -13,7 +13,7 @@
 <div class="orders-container">
 <% @orders.each do |o| %>
 <div class="order">
-    <%= o.requester.email %>
+    <a href="/requesters/<%= o.requester.id %>"><%= o.requester.name %></a>
     <%= o.title %>
     <%= o.body %>
     <%= o.created_at %>
@@ -37,20 +37,19 @@
     <% if requester_signed_in? && current_requester.id == o.requester_id %>
         <%= button_to "Details", order_path(o.id) %>
         <%= button_to "Edit", edit_order_path(o.id) %>
-    <% end %> 
+        <%= button_to "Delete", order_path(o.id), method: :delete %>
+        <% end %> 
+    
 
-    <%= button_to "Delete", order_path(o.id), method: :delete %>
-
-    <a href="/requesters/<%= o.requester.id %>"><%= o.requester.name %></a>
 </div>
 <% end %>
 </div>
 <%= paginate @orders %>
 
 <br><br>
-<% if requester_signed_in? %>
+<% if Requester %>
 <%= button_to 'Logout for requesters', destroy_requester_session_path, method: :delete %>
-<% elsif student_signed_in? %>
+<% elsif Student %>
 <%= button_to 'Logout for students', destroy_student_session_path, method: :delete %>
 <% else %>
 Are you an Admin?

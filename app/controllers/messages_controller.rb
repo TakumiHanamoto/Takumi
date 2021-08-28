@@ -1,7 +1,4 @@
 class MessagesController < ApplicationController
-    before_action :authenticate_requester!, :only => [:create]
-    before_action :authenticate_student!, :only => [:create]
-
 def create
     if Entry.where(:requester_id => current_requester.id, :room_id => params[:message][:room_id]).present?
         @message = Message.create(params.require(:message).permit(:requester_id, :content, :room_id).merge(:requester_id => current_requester.id))

@@ -1,5 +1,4 @@
 class StudentsController < ApplicationController
-  before_action :authenticate_student!, :only => [:show]
   def index
     @students=Student.all
   end

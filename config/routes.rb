@@ -2,14 +2,13 @@ Rails.application.routes.draw do
   root 'hello#index'
   get 'hello/index' => 'hello#index'
   get 'hello/link' => 'hello#link'
-  get 'students/index'
-  get 'students/show'
-  get 'requesters/index'
-  get 'requesters/show'
+  post 'orders/:id' => 'orders#show',as: 'order'
+  post 'orders/new' => 'orders#new'
+  post 'orders/:id/edit' => 'orders#edit', as:'edit_order'
   devise_for :students
   resources :students, only: [:index, :show]
   devise_for :requesters
-  resources :requesters, only: [:index, :show]
+  resources :requesters, only: [:index, :show, :edit, :update]
   
 
   resources :orders do
@@ -19,5 +18,5 @@ Rails.application.routes.draw do
   resources :messages, :only => [:create]
   resources :rooms, :only => [:create, :show, :index]
   
-  post 'orders/new' => 'orders#new'
+
 end

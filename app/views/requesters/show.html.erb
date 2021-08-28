@@ -19,9 +19,7 @@
   <%= t.body %>
 <% end %>
 
-<% if @requester.id == current_requester.id %>
-
-<% else %>
+<% unless @requester.id == current_requester.id %>
   <% if @isRoom == true %>
     <p><a href="/rooms/<%= @roomId %>">チャットへ</a>
   <% else %>
