@@ -23,7 +23,27 @@
 </div>
 
 <h2>Requester you're liked </h2>
-<% @order.liked_requesters.each do |requester| %>
-  <li><%= requester.email %></li>
+    <% @order.liked_requesters.each do |requester| %>
+        <li><%= requester.email %></li>
+    <% end %>
+
+<% if student_signed_in? %>
+    <% if current_student.already_received?(@order) %>
+        <%= link_to order_receive_path(@order), method: :delete do %>
+        <p>Cancell Receiving</p><%= @order.receives.count %>
+    <% end %>
+<% else %>
+    <%= link_to order_receives_path(@order), method: :post do %>
+    <p>Receive</p><%= @order.receives.count %>
+    <% end %>
 <% end %>
+<% else %>
+<p>Count of Receive = </p><%= @order.receives.count %>
+<% end %>
+
+<h2>Student you're received </h2>
+<% @order.received_students.each do |student| %>
+    <li><%= student.name %></li>
+<% end %>
+
 <%= link_to "orders", orders_path %>

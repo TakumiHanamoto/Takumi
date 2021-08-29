@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   resources :orders do
     resources :likes, only: [:create, :destroy]
+    resources :receives, only: [:create, :destroy]
   end
 
   resources :messages, :only => [:create]

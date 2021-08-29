@@ -1,6 +1,9 @@
 <h1>Srental</h1>
 <h3>依頼一覧</h3>
+
+<% if Requester %>
 <%= button_to "new_order", new_order_path %>
+<% end %>
 
 <% if requester_signed_in? %>
 <%= link_to "マイページへ", requester_path(current_requester.id) %>　

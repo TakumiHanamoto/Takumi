@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_26_103439) do
+ActiveRecord::Schema.define(version: 2021_08_29_034107) do
 
   create_table "entries", force: :cascade do |t|
     t.integer "requester_id", null: false
@@ -50,6 +50,15 @@ ActiveRecord::Schema.define(version: 2021_08_26_103439) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "image"
     t.integer "requester_id"
+  end
+
+  create_table "receives", force: :cascade do |t|
+    t.integer "order_id", null: false
+    t.integer "student_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["order_id"], name: "index_receives_on_order_id"
+    t.index ["student_id"], name: "index_receives_on_student_id"
   end
 
   create_table "requesters", force: :cascade do |t|
@@ -93,4 +102,6 @@ ActiveRecord::Schema.define(version: 2021_08_26_103439) do
   add_foreign_key "likes", "requesters"
   add_foreign_key "messages", "requesters"
   add_foreign_key "messages", "students"
+  add_foreign_key "receives", "orders"
+  add_foreign_key "receives", "students"
 end
