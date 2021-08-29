@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_29_034107) do
+ActiveRecord::Schema.define(version: 2021_08_29_043315) do
 
   create_table "entries", force: :cascade do |t|
     t.integer "requester_id", null: false
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 2021_08_29_034107) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
     t.text "profile"
+    t.boolean "admin", default: false
     t.index ["email"], name: "index_requesters_on_email", unique: true
     t.index ["reset_password_token"], name: "index_requesters_on_reset_password_token", unique: true
   end
