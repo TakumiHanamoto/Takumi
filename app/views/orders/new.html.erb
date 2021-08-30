@@ -6,11 +6,9 @@
     <%= f.text_field :title, :size => 160 %>
     <%= f.label :body %>
     <%= f.text_area :body, :size => "50x20" %>
-</div>
-<div class="field">
     <%= f.label :image %>
     <%= f.file_field :image %>
     
 <%= f.submit "order_button" %>
 <% end %>
-<%= link_to "order", orders_path %>
+<%= link_to "order一覧に戻る", orders_path %>

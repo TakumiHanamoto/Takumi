@@ -20,7 +20,6 @@
 <% else %>
 <p>Count of Like = </p><%= @order.likes.count %>
 <% end %>
-</div>
 
 <h2>Requester you're liked </h2>
     <% @order.liked_requesters.each do |requester| %>
@@ -34,16 +33,17 @@
     <% end %>
 <% else %>
     <%= link_to order_receives_path(@order), method: :post do %>
-    <p>Receive</p><%= @order.receives.count %>
+    <p>受注</p><%= @order.receives.count %>
     <% end %>
 <% end %>
 <% else %>
-<p>Count of Receive = </p><%= @order.receives.count %>
+<p>受注した人数 = </p><%= @order.receives.count %>
 <% end %>
 
 <h2>Student you're received </h2>
 <% @order.received_students.each do |student| %>
     <li><%= student.name %></li>
 <% end %>
+</div>
 
 <%= link_to "orders", orders_path %>

@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
   root 'hello#index'
-  get 'hello/index' => 'hello#index'
-  get 'hello/link' => 'hello#link'
   post 'orders/:id' => 'orders#show',as: 'order'
   post 'orders/new' => 'orders#new'
   post 'orders/:id/edit' => 'orders#edit', as:'edit_order'

@@ -6,6 +6,7 @@ devise :database_authenticatable, :registerable,
 
   validates :name, presence: true
   validates :profile, length: { maximum: 200 }
+  has_many :orders, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :liked_orders, through: :likes, source: :order
   has_many :messages, dependent: :destroy
@@ -17,7 +18,7 @@ devise :database_authenticatable, :registerable,
     self.likes.exists?(order_id: order.id)
   end
 
-  def already_received?(tweet)
+  def already_received?(order)
     self.receives.exists?(order_id: order.id)
   end
 end

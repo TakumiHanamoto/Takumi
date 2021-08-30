@@ -35,6 +35,20 @@
         <p>Count of Like = </p></i><%= o.likes.count %>
     <% end %>
 
+    <% if student_signed_in? %>
+    　<% if current_student.already_received?(o) %>
+        　<%= link_to order_receive_path(id: o.id, order_id: o.id), method: :delete do %>
+        　<p>Cancell Receive</p><%= o.receives.count %>
+        　<% end %>
+    　<% else %>
+        　<%= link_to order_receives_path(id: o.id, order_id: o.id), method: :post do %>
+            　<p>Receive</p><%= o.receives.count %>
+        　<% end %>
+    　<% end %>
+　　<% else %>
+    　<p>Receiveの数 = </p><%= o.receives.count %>
+　<% end %>
+
     <%= image_tag o.image_url, size: "250x200" if o.image? %>
 
     <% if requester_signed_in? && current_requester.id == o.requester_id %>
