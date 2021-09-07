@@ -27,21 +27,21 @@
     <% end %>
 
 <% if student_signed_in? %>
-    <% if current_student.already_received?(@order) %>
-        <%= link_to order_receive_path(@order), method: :delete do %>
-        <p>Cancell Receiving</p><%= @order.receives.count %>
+    <% if current_student.already_favorited?(@order) %>
+        <%= link_to order_favorite_path(@order), method: :delete do %>
+        <p>Cancell favoriting</p><%= @order.favorites.count %>
     <% end %>
 <% else %>
-    <%= link_to order_receives_path(@order), method: :post do %>
-    <p>受注</p><%= @order.receives.count %>
+    <%= link_to order_favorites_path(@order), method: :post do %>
+    <p>受注</p><%= @order.favorites.count %>
     <% end %>
 <% end %>
 <% else %>
-<p>受注した人数 = </p><%= @order.receives.count %>
+<p>受注した人数 = </p><%= @order.favorites.count %>
 <% end %>
 
-<h2>Student you're received </h2>
-<% @order.received_students.each do |student| %>
+<h2>Student you're favorited </h2>
+<% @order.favorited_students.each do |student| %>
     <li><%= student.name %></li>
 <% end %>
 </div>

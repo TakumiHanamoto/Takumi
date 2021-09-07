@@ -1,11 +1,5 @@
 class OrdersController < ApplicationController
 
-    if Requester
-    before_action :authenticate_requester!
-    elsif Student
-    before_action :authenticate_student!
-    end
-
     def index
         @orders = Order.all
         if params[:search] == nil

@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ReceivesControllerTest < ActionDispatch::IntegrationTest
+class FavoriteTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

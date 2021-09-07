@@ -11,14 +11,14 @@ devise :database_authenticatable, :registerable,
   has_many :liked_orders, through: :likes, source: :order
   has_many :messages, dependent: :destroy
   has_many :entries, dependent: :destroy
-  has_many :receives, dependent: :destroy
-  has_many :received_orders, through: :receives, source: :order
+  has_many :favorites, dependent: :destroy
+  has_many :favorited_orders, through: :favorites, source: :order
 
   def already_liked?(order)
     self.likes.exists?(order_id: order.id)
   end
 
-  def already_received?(order)
-    self.receives.exists?(order_id: order.id)
+  def already_favorited?(order)
+    self.favorites.exists?(order_id: order.id)
   end
 end

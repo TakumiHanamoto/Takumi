@@ -1,4 +1,4 @@
-class Receive < ApplicationRecord
+class Favorite < ApplicationRecord
   belongs_to :order
   belongs_to :student
   validates_uniqueness_of :order_id, scope: :student_id

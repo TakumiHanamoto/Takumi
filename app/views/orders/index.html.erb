@@ -1,14 +1,15 @@
+<%= stylesheet_link_tag 'index', :media => "all" %>
 <h1>Srental</h1>
 <h3>依頼一覧</h3>
 
-<% if Requester %>
+<% if requester_signed_in? %>
 <%= button_to "new_order", new_order_path %>
 <% end %>
 
 <% if requester_signed_in? %>
-<%= link_to "マイページへ", requester_path(current_requester.id) %>　
+<%= link_to "MyPage for Requesters", requester_path(current_requester.id) %>　
 <% elsif student_signed_in? %>
-<%= link_to "マイページへ", student_path(current_student.id) %>
+<%= link_to "MyPage for Students", student_path(current_student.id) %>
 <% end %>
 
 <br>
@@ -16,10 +17,23 @@
 <div class="orders-container">
 <% @orders.each do |o| %>
 <div class="order">
+    <div class="main-box">
     <a href="/requesters/<%= o.requester.id %>"><%= o.requester.name %></a>
-    <%= o.title %>
-    <%= o.body %>
-    <%= o.created_at %>
+        <div class="left-container">
+        <%= o.title %>
+        <%= o.body %>
+        </div>
+            <div class="right-container">
+            <p class="time"><%= o.created_at %></p>
+            <% if requester_signed_in? && current_requester.id == o.requester_id %>
+                <%= button_to "Details", order_path(o.id) %>
+                <%= button_to "Edit", edit_order_path(o.id) %>
+                <%= button_to "Delete", order_path(o.id), method: :delete %>
+            <% end %> 
+            </div>
+    </div>
+</div>
+
 
     <% if requester_signed_in? %>
     <% if current_requester.already_liked?(o) %>
@@ -36,31 +50,26 @@
     <% end %>
 
     <% if student_signed_in? %>
-    　<% if current_student.already_received?(o) %>
-        　<%= link_to order_receive_path(id: o.id, order_id: o.id), method: :delete do %>
-        　<p>Cancell Receive</p><%= o.receives.count %>
+    　<% if current_student.already_favorited?(o) %>
+        　<%= link_to order_favorite_path(id: o.id, order_id: o.id), method: :delete do %>
+        　<p>Cancell Favorite</p><%= o.favorites.count %>
         　<% end %>
     　<% else %>
-        　<%= link_to order_receives_path(id: o.id, order_id: o.id), method: :post do %>
-            　<p>Receive</p><%= o.receives.count %>
+        　<%= link_to order_favorites_path(id: o.id, order_id: o.id), method: :post do %>
+            　<p>Favorite</p><%= o.favorites.count %>
         　<% end %>
     　<% end %>
 　　<% else %>
-    　<p>Receiveの数 = </p><%= o.receives.count %>
+    　<p>favoriteの数 = </p><%= o.favorites.count %>
 　<% end %>
 
     <%= image_tag o.image_url, size: "250x200" if o.image? %>
-
-    <% if requester_signed_in? && current_requester.id == o.requester_id %>
-        <%= button_to "Details", order_path(o.id) %>
-        <%= button_to "Edit", edit_order_path(o.id) %>
-        <%= button_to "Delete", order_path(o.id), method: :delete %>
-        <% end %> 
     
 
 </div>
 <% end %>
 </div>
+
 <%= paginate @orders %>
 
 <br><br>
