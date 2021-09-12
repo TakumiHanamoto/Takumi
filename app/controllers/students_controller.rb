@@ -4,7 +4,7 @@ class StudentsController < ApplicationController
   end
 
   def show
-    @student=student.find(params[:id])
+    @student=Student.find(params[:id])
     @currentUserEntry=Entry.where(student_id: current_student.id)
     @studentEntry=Entry.where(student_id: @student.id)
     if @student.id == current_student.id

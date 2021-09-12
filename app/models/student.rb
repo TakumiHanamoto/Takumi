@@ -9,6 +9,7 @@ devise :database_authenticatable, :registerable,
   has_many :orders, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :liked_orders, through: :likes, source: :order
+  has_many :rooms
   has_many :messages, dependent: :destroy
   has_many :entries, dependent: :destroy
   has_many :favorites, dependent: :destroy

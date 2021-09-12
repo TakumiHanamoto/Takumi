@@ -7,6 +7,14 @@
 <% end %>
 
 <% if requester_signed_in? %>
+<%= button_to 'Logout for requesters', destroy_requester_session_path, method: :delete %>
+<% elsif student_signed_in? %>
+<%= button_to 'Logout for students', destroy_student_session_path, method: :delete %>
+<% else %>
+Are you an Admin?
+<% end %>
+
+<% if requester_signed_in? %>
 <%= link_to "MyPage for Requesters", requester_path(current_requester.id) %>　
 <% elsif student_signed_in? %>
 <%= link_to "MyPage for Students", student_path(current_student.id) %>
@@ -71,12 +79,4 @@
 </div>
 
 <%= paginate @orders %>
-
-<br><br>
-<% if Requester %>
-<%= button_to 'Logout for requesters', destroy_requester_session_path, method: :delete %>
-<% elsif Student %>
-<%= button_to 'Logout for students', destroy_student_session_path, method: :delete %>
-<% else %>
-Are you an Admin?
-<% end %>
+<br>

@@ -9,7 +9,6 @@ end
 def create
     @room = Room.create!
     @entry1 = Entry.create!(:room_id => @room.id, :requester_id => current_requester.id)
-    @entry2 = Entry.create!(params.require(:entry).permit(:requester_id, :room_id).merge(:room_id => @room.id))
     redirect_to "/rooms/#{@room.id}"
 end
 
