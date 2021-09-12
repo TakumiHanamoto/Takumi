@@ -16,7 +16,9 @@
   <h1>商大生レンタル掲示板</h1>
   <div class="header-list">
   <ul>
+    <% if requester_signed_in? or student_signed_in? %>
     <li><%= link_to "ホーム", orders_path %></li>
+    <% end %>
     <% if requester_signed_in? %>
     <li><%= link_to "新規依頼",orders_new_path %></li>
     <% end %>

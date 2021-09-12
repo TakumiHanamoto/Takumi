@@ -7,18 +7,6 @@
   <%= link_to "編集する", edit_student_registration_path %>
 <% end %>
 
-<h2>ユーザーの投稿一覧</h2>
-<% @student.orders.each do |t| %>
-  <%= t.student.name %>
-  <%= t.body %>
-<% end %>
-
-<h2>ユーザーがいいねした投稿一覧</h2>
-<% @student.liked_orders.each do |t| %>
-  <%= t.student.name %>
-  <%= t.body %>
-<% end %>
-
 <% unless @student.id == current_student.id %>
   <% if @isRoom == true %>
     <p><a href="/rooms/<%= @roomId %>">チャットへ</a>

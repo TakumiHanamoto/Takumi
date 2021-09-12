@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-
+    
     def index
         @orders = Order.all
         if params[:search] == nil

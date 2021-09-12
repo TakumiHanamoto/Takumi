@@ -4,3 +4,7 @@
 <%= link_to "Login for student", new_student_session_path %>
 <%= link_to "Register for requesters", new_requester_registration_path %>
 <%= link_to "Register for students", new_student_registration_path %>
+
+<% if requester_signed_in? or student_signed_in? %>
+<%= link_to 'orders/index', orders_path %>
+<% end %>
