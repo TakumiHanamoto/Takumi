@@ -1,14 +1,34 @@
-<h1>Srental</h1>
-<h3>新規依頼</h3>
-<%= form_for @order do |f| %>
-<div class="field">
-    <%= f.label :title %>
-    <%= f.text_field :title, :size => 160 %>
-    <%= f.label :body %>
-    <%= f.text_area :body, :size => "50x20" %>
-    <%= f.label :image %>
-    <%= f.file_field :image %>
-    
-<%= f.submit "order_button" %>
+
+
+<p><h1 class="text-center font-weight-bold pt-5">新規依頼</h1><p>
+    <%= form_for @order do |f| %>
+    <div class="col-md-10" pt-5>
+        <h4><%= f.label :タイトル %></h4>
+        <p><small>商大生の目を引くようなタイトルにしてみましょう。例：冷蔵庫が重くて運べない！</small></p>
+        <%= f.text_field :title, :size => 160, class: "col-md-8 form-control", placeholder: "一言で概要を端的に書いてください。" %><br>
+        <h4><%= f.label :依頼内容 %></h4>
+        <p><small>「何をしてほしいのか？」をしっかりと明示しましょう。トラブルの原因になります。</small></p>
+        <%= f.text_area :body, :size => "40x5", class: "col-md-12 form-control", placeholder: "なるべく具体的に書いてください。" %><br>
+        <h4><%= f.label :場所 %></h4>
+        <p><small>住所を詳しく書かないでください。不特定多数にあなたの住所が知られてしまいます。</small></p>
+        <%= f.text_field :place, :size => 100, class: "col-md-12 form-control", placeholder: "例：小樽市稲穂町　「番地、マンション」は必要ありません。" %><br>
+        <h4><%= f.label :日時（いつからいつまで） %></h4>
+            <div class="row">
+                <div class="col">
+                    <%= f.datetime_field :datefrom, :size => 100, class: "col-md-6 form-control", placeholder: "開始地点" %>
+                </div>
+                <div class="col">
+                    <%= f.datetime_field :dateto, :size => 100, class: "col-md-6 form-control", placeholder: "終了地点" %><br>
+                </div>
+            </div>
+        <h4><%= f.label :必要な人数 %></h4>
+        <%= f.number_field :people, :size => 100, class: "col-md-12 form-control" %><br>
+        <h4><%= f.label :仕事内容 %></h4>
+        <%= f.select :job, [["力仕事",1],["知識や知恵を使う仕事",2],["その他",3]], prompt: "依頼のカテゴリを選択してください", :size => 100, class: "col-md-12 form-control" %><br>
+        <h4><%= f.label :画像を挿入 %></h4>
+        <%= f.file_field :image, class: "col-md-12 form-control" %><br>
+    <%= f.submit "発注する", class: "btn btn-primary" %><br>
+    </div>
+
 <% end %>
-<%= link_to "order一覧に戻る", orders_path %>
+<%= link_to "order一覧に戻る", orders_path %><br><br><br>

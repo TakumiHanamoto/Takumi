@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   root 'hello#index'
   post 'orders/:id' => 'orders#show',as: 'order'
-  post 'orders/new' => 'orders#new'
   post 'orders/:id/edit' => 'orders#edit', as:'edit_order'
   devise_for :students, controllers: {
     sessions:       'students/sessions',
@@ -23,7 +22,7 @@ Rails.application.routes.draw do
     resources :favorites, only: [:create, :destroy]
   end
 
-  resources :rooms, :only => [:create, :show, :index] do
+  resources :rooms, :only => [:create, :show] do
   resources :messages, :only => [:create]
   end
 

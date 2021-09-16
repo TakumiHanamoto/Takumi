@@ -1,13 +1,22 @@
 class MessagesController < ApplicationController
 def create
-    if Entry.where(:requester_id => current_requester.id, :room_id => params[:message][:room_id]).present?
-        @message = Message.create(params.require(:message).permit(:requester_id, :content, :room_id).merge(:requester_id => current_requester.id))
-        redirect_to "/rooms/#{@message.room_id}"
-    elsif Entry.where(:student_id => current_student.id, :room_id => params[:message][:room_id]).present?
-        @message = Message.create(params.require(:message).permit(:student_id, :content, :room_id).merge(:student_id => current_student.id))
-        redirect_to "/rooms/#{@message.room_id}"
+    @room = Room.find(params[:room_id])
+    @message = Message.new(message_params)
+    if requester_signed_in?
+        @message.is_requester = true
+    elsif student_signed_in?
+        @message.is_requester = false
+    end
+    @message.room_id = @room.id
+    if @message.save!
+        redirect_to room_url(@room)
     else
-        redirect_back(fallback_location: root_path)
+        redirect_to room_url(@room)
     end
 end
+
+private
+    def message_params
+        params.require(:message).permit(:content)
+    end
 end

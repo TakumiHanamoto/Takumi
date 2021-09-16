@@ -1,27 +1,50 @@
 class RoomsController < ApplicationController
 
-def index
-    @rooms = Room.all
-    @entries = Entry.all
-    @users = User.all
-end
-
 def create
-    @room = Room.create!
-    @entry1 = Entry.create!(:room_id => @room.id, :requester_id => current_requester.id)
-    redirect_to "/rooms/#{@room.id}"
+    if requester_signed_in?
+        @room = Room.new(room_student_params)
+        @room.requester_id = current_requester.id
+    elsif student_signed_in?
+        @room = Room.new(room_requester_params)
+        @room.student_id = current_student.id
+    else
+        redirect_to "/"
+    end
+
+    if @room.save
+        redirect_to :action => "show", :id => @room.id
+    else
+        redirect_to "/"
+    end
 end
 
 def show
     @room = Room.find(params[:id])
-    if Entry.where(:requester_id => current_requester.id, :room_id => @room.id).present? or Entry.where(:student_id => current_student.id, :room_id => @room.id).present?
-        @messages = @room.messages
-        @message = Message.new
-        @entries = @room.entries
+    @message = Message.new
+    @messages = @room.messages
+    if requester_signed_in?
+        if @room.requester_id == current_requester.id
+            @student = @room.student_id
+        else
+            redirect_to "/"
+        end
+    elsif student_signed_in?
+        if @room.student.id == current_student.id
+            @requester = @room.requester
+        else
+            redirect_to "/"
+        end
     else
-        redirect_back(fallback_location: root_path)
+        redirect_to "/"
     end
 end
 
+    private
+    def room_student_params
+        params.require(:room).permit(:student_id)
+    end
+    def room_requester_params
+        params.require(:room).permit(:requester_id)
+    end
 end
 

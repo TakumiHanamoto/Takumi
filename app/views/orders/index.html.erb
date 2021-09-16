@@ -1,42 +1,39 @@
 <%= stylesheet_link_tag 'index', :media => "all" %>
-<h1>Srental</h1>
-<h3>依頼一覧</h3>
+<h1>依頼一覧</h1>
 
 <% if requester_signed_in? %>
-<%= button_to "new_order", new_order_path %>
+~<%= current_requester.name %>がログインしてます~
+<%= button_to 'ログアウトはこちら', destroy_requester_session_path, method: :delete %>
+<% elsif student_signed_in? %>
+~<%= current_student.name %>がログインしてます~
+<%= button_to 'ログアウトはこちら', destroy_student_session_path, method: :delete %>
 <% end %>
 
 <% if requester_signed_in? %>
-<%= button_to 'Logout for requesters', destroy_requester_session_path, method: :delete %>
+<%= link_to "マイページ", requester_path(current_requester.id) %>　
 <% elsif student_signed_in? %>
-<%= button_to 'Logout for students', destroy_student_session_path, method: :delete %>
-<% else %>
-Are you an Admin?
-<% end %>
-
-<% if requester_signed_in? %>
-<%= link_to "MyPage for Requesters", requester_path(current_requester.id) %>　
-<% elsif student_signed_in? %>
-<%= link_to "MyPage for Students", student_path(current_student.id) %>
+<%= link_to "マイページ", student_path(current_student.id) %>
 <% end %>
 
 <br>
 <%= page_entries_info @orders %>
-<div class="orders-container">
+<div class="orders-container", class: "col-md-12 form-control">
     <% @orders.each do |o| %>
         <div class="order">
             <div class="main-box">
-                <a href="/requesters/<%= o.requester.id %>"><%= o.requester.name %></a>
-                <div class="left-container">
-                    <%= o.title %>
-                    <%= o.body %>
+                
+                <div class="left-container", class: "col-md-12 form-control">
+                    <a href="/requesters/<%= o.requester.id %>"><%= o.requester.name %></a><br>
+                    <h4><%= o.title %></h4><br>
+                    <%= o.body %><br>
+                    <p class="time"><%= o.created_at %></p>
                 </div>
                 <div class="right-container">
-                    <p class="time"><%= o.created_at %></p>
+                    
                     <% if requester_signed_in? && current_requester.id == o.requester_id %>
-                        <%= button_to "Details", order_path(o.id) %>
-                        <%= button_to "Edit", edit_order_path(o.id) %>
-                        <%= button_to "Delete", order_path(o.id), method: :delete %>
+                        <%= button_to "依頼詳細", order_path(o.id) %>
+                        <%= button_to "編集する", edit_order_path(o.id) %>
+                        <%= button_to "依頼を取り消す", order_path(o.id), method: :delete %>
                     <% end %> 
                 </div>
             </div>
@@ -46,29 +43,29 @@ Are you an Admin?
         <% if requester_signed_in? %>
             <% if current_requester.already_liked?(o) %>
                 <%= link_to order_like_path(id: o.id, order_id: o.id), method: :delete do %>
-                    <p>Cancell Like</p></i><%= o.likes.count %>
+                    <p>いいねを取り消す</p></i><%= o.likes.count %>
                 <% end %>
             <% else %>
                 <%= link_to order_likes_path(id: o.id, order_id: o.id), method: :post do %>
-                    <p>Like</p></i><%= o.likes.count %>
+                    <p>いいね</p></i><%= o.likes.count %>
                 <% end %>
             <% end %>
         <% else %>
-            <p>Count of Like = </p></i><%= o.likes.count %>
+            <p>いいねされた数</p></i><%= o.likes.count %>
         <% end %>
 
         <% if student_signed_in? %>
             <% if current_student.already_favorited?(o) %>
                 <%= link_to order_favorite_path(id: o.id, order_id: o.id), method: :delete do %>
-                    <p>Cancell Favorite</p><%= o.favorites.count %>
+                    <p>受注を取り消す</p><%= o.favorites.count %>
                 <% end %>
             <% else %>
                 <%= link_to order_favorites_path(id: o.id, order_id: o.id), method: :post do %>
-                    <p>Favorite</p><%= o.favorites.count %>
+                    <p>受注</p><%= o.favorites.count %>
                 <% end %>
             <% end %>
         <% else %>
-            <p>favoriteの数 = </p><%= o.favorites.count %>
+            <p>受注した数</p><%= o.favorites.count %>
         <% end %>
 
         <%= image_tag o.image_url, size: "250x200" if o.image? %>
@@ -78,3 +75,31 @@ Are you an Admin?
 
 <%= paginate @orders %>
 <br>
+<h2>DM簡易版</h2>
+<br>
+
+<% @students.each do |student| %>
+    <%= student.name %>
+    <% if @student_ids.include?(student.id) %>
+        <br>
+        <%= link_to "チャットへ", room_path(current_requester.rooms.find_by(student_id: student.id)) %><br>
+    <% else %>
+        <%= form_for Room.new do |f| %>
+            <%= f.hidden_field :student_id, :value => student.id %>
+            <%= f.submit %>
+        <% end %>
+    <% end %>
+<% end %>
+
+<% @requesters.each do |requester| %>
+    <%= requester.name %>
+    <% if @requester_ids.include?(requester.id) %>
+        <br>
+        <%= link_to "チャットへ", room_path(current_student.rooms.find_by(requester_id: requester.id)) %><br>
+    <% else %>
+        <%= form_for Room.new do |f| %>
+            <%= f.hidden_field :requester_id, :value => requester.id %>
+            <%= f.submit %>
+        <% end %>
+    <% end %>
+<% end %>

@@ -1,6 +1,26 @@
 class OrdersController < ApplicationController
     
     def index
+        if requester_signed_in?
+            @requesters = Requester.all
+            @students = Student.all
+            rooms = current_requester.rooms
+            @requester_ids = []
+            @student_ids = []
+            rooms.each do |r|
+                @student_ids << r.student_id
+            end
+        elsif student_signed_in?
+            @students = Student.all
+            @requesters = Requester.all
+            rooms = current_student.rooms
+            @student_ids = []
+            @requester_ids = []
+            rooms.each do |r|
+                @requester_ids << r.requester_id
+            end
+        end
+
         @orders = Order.all
         if params[:search] == nil
             @orders= Order.all.page(params[:page]).per(10)
@@ -20,7 +40,7 @@ class OrdersController < ApplicationController
     def create
         order = Order.new(order_params)
         order.requester_id = current_requester.id
-        if order.save
+        if order.save!
         redirect_to :action => "index"
         else
         redirect_to :action => "new"
@@ -52,6 +72,6 @@ class OrdersController < ApplicationController
     
     private
     def order_params
-        params.require(:order).permit(:body, :title, :image)
+        params.require(:order).permit(:body, :title, :image, :place, :datefrom, :dateto, :people, :job)
     end
 end

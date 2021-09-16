@@ -10,27 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_12_062909) do
-
-  create_table "acceptances", force: :cascade do |t|
-    t.integer "order_id", null: false
-    t.integer "student_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["order_id"], name: "index_acceptances_on_order_id"
-    t.index ["student_id"], name: "index_acceptances_on_student_id"
-  end
-
-  create_table "entries", force: :cascade do |t|
-    t.integer "requester_id", null: false
-    t.integer "student_id", null: false
-    t.integer "room_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["requester_id"], name: "index_entries_on_requester_id"
-    t.index ["room_id"], name: "index_entries_on_room_id"
-    t.index ["student_id"], name: "index_entries_on_student_id"
-  end
+ActiveRecord::Schema.define(version: 2021_09_15_032405) do
 
   create_table "favorites", force: :cascade do |t|
     t.integer "order_id", null: false
@@ -67,15 +47,11 @@ ActiveRecord::Schema.define(version: 2021_09_12_062909) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "image"
     t.integer "requester_id"
-  end
-
-  create_table "receives", force: :cascade do |t|
-    t.integer "order_id", null: false
-    t.integer "student_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["order_id"], name: "index_receives_on_order_id"
-    t.index ["student_id"], name: "index_receives_on_student_id"
+    t.string "place"
+    t.datetime "datefrom"
+    t.datetime "dateto"
+    t.integer "people"
+    t.string "job"
   end
 
   create_table "requesters", force: :cascade do |t|
@@ -117,18 +93,11 @@ ActiveRecord::Schema.define(version: 2021_09_12_062909) do
     t.index ["reset_password_token"], name: "index_students_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "acceptances", "orders"
-  add_foreign_key "acceptances", "students"
-  add_foreign_key "entries", "requesters"
-  add_foreign_key "entries", "rooms"
-  add_foreign_key "entries", "students"
   add_foreign_key "favorites", "orders"
   add_foreign_key "favorites", "students"
   add_foreign_key "likes", "orders"
   add_foreign_key "likes", "requesters"
   add_foreign_key "messages", "rooms"
-  add_foreign_key "receives", "orders"
-  add_foreign_key "receives", "students"
   add_foreign_key "rooms", "requesters"
   add_foreign_key "rooms", "students"
 end
