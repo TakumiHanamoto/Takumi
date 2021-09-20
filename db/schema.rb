@@ -31,16 +31,14 @@ ActiveRecord::Schema.define(version: 2021_09_15_032405) do
   end
 
   create_table "messages", force: :cascade do |t|
-    t.integer "requester_id", null: false
-    t.integer "student_id", null: false
+    t.integer "requester_id"
+    t.integer "student_id"
     t.text "content"
     t.string "image"
     t.integer "messages_id", null: false
     t.integer "room_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "is_student"
-    t.boolean "is_requester"
     t.index ["messages_id"], name: "index_messages_on_messages_id"
     t.index ["requester_id"], name: "index_messages_on_requester_id"
     t.index ["room_id"], name: "index_messages_on_room_id"

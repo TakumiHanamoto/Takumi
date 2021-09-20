@@ -1,49 +1,60 @@
-<h1>Srental</h1>
-<h3>Details</h3>
-<div class="order">
-    <p><%= @order.id %></p>
-    <p><%= @order.title %></p>
-    <p><%= @order.body %></p>
-    <p><%= @order.created_at %></p>
-    <%= link_to "Edit", edit_order_path(@order.id) %>
+<%= stylesheet_link_tag 'index', :media => "all" %>
+<h3>依頼詳細</h3>
+<div class="orders-container">
+    <div class="order">
+        <div class="main-box">
+            <div class="left-container", class: "col-md-12 form-control">
+                <p><%= @order.id %></p>
+                <h4><%= @order.title %></h4>
+                <p><%= @order.body %></p>
+                <p><%= @order.place %></p>
+                <p><%= @order.datefrom %>～<%= @order.dateto %></p>
+                <p><%= @order.job %></p>
+            </div>
+            <div class="right-container", class: "col-md-4 form-control">
+                <p><%= @order.created_at %></p>
+                <% if requester_signed_in? && current_requester.id == @order.requester_id %>
+                <%= button_to "編集する", edit_order_path(@order.id), class: "btn btn-primary" %>
+                <%= button_to "依頼を取り消す", order_path(@order.id), method: :delete, class: "btn btn-primary" %>
+                <% if requester_signed_in? %>
+                    <% if current_requester.already_liked?(@order) %>
+                        <%= button_to order_like_path(@order), class: "btn btn-primary", method: :delete do %>
+                            <p>いいねを取り消す</p>
+                        <% end %><br>
+                    <% else %>
+                        <%= button_to order_likes_path(@order), class: "btn btn-primary", method: :post do %>
+                            <p>いいね</p>
+                        <% end %><br>
+                    <% end %>
+                <% else %>
+                    <p>いいねの数 = </p><%= @order.likes.count %><br>
+                <% end %>
+                
+                <% @order.liked_requesters.each do |requester| %>
+                    <li><%= requester.name %></li><br>
+                <% end %>
+                <% if student_signed_in? %>
+                    <% if current_student.already_favorited?(@order) %>
+                        <%= button_to order_favorite_path(@order), method: :delete do %>
+                        <p>受注を取り消す</p><%= @order.favorites.count %>
+                        <% end %>
+                    <% else %>
+                        <%= button_to order_favorites_path(@order), method: :post do %>
+                        <p>受注</p><%= @order.favorites.count %>
+                        <% end %>
+                    <% end %>
+                <% else %>
+                    <p>受注した人数<%= @order.favorites.count %>（<%= @order.people %>人中）</p>
+                <% end %>
+            </div>
+        </div>
 
-    <% if requester_signed_in? %>
-    <% if current_requester.already_liked?(@order) %>
-        <%= link_to order_like_path(@order), method: :delete do %>
-            <p>Cancell Like</p><%= @order.likes.count %>
+        <h2>受注した商大生 </h2>
+            <% @order.favorited_students.each do |student| %>
+            <li><%= student.name %></li>
         <% end %>
-    <% else %>
-        <%= link_to order_likes_path(@order), method: :post do %>
-            <p>Like</p><%= @order.likes.count %>
-        <% end %>
-    <% end %>
-<% else %>
-<p>Count of Like = </p><%= @order.likes.count %>
-<% end %>
-
-<h2>Requester you're liked </h2>
-    <% @order.liked_requesters.each do |requester| %>
-        <li><%= requester.email %></li>
-    <% end %>
-
-<% if student_signed_in? %>
-    <% if current_student.already_favorited?(@order) %>
-        <%= link_to order_favorite_path(@order), method: :delete do %>
-        <p>Cancell favoriting</p><%= @order.favorites.count %>
-    <% end %>
-<% else %>
-    <%= link_to order_favorites_path(@order), method: :post do %>
-    <p>受注</p><%= @order.favorites.count %>
-    <% end %>
-<% end %>
-<% else %>
-<p>受注した人数 = </p><%= @order.favorites.count %>
-<% end %>
-
-<h2>Student you're favorited </h2>
-<% @order.favorited_students.each do |student| %>
-    <li><%= student.name %></li>
-<% end %>
+    </div>
 </div>
 
-<%= link_to "orders", orders_path %>
+<%= button_to "orders", orders_path %>
+<% end %>

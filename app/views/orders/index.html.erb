@@ -10,9 +10,9 @@
 <% end %>
 
 <% if requester_signed_in? %>
-<%= link_to "マイページ", requester_path(current_requester.id) %>　
+<%= button_to "マイページ", requester_path(current_requester.id) %>　
 <% elsif student_signed_in? %>
-<%= link_to "マイページ", student_path(current_student.id) %>
+<%= button_to "マイページ", student_path(current_student.id) %>
 <% end %>
 
 <br>
@@ -25,7 +25,10 @@
                 <div class="left-container", class: "col-md-12 form-control">
                     <a href="/requesters/<%= o.requester.id %>"><%= o.requester.name %></a><br>
                     <h4><%= o.title %></h4><br>
-                    <%= o.body %><br>
+                    <p><%= o.body %></p><br>
+                    <%= o.place %><br>
+                    <%= o.datefrom %>～<%= o.dateto %><br>
+                    <%= o.job %><br>
                     <p class="time"><%= o.created_at %></p>
                 </div>
                 <div class="right-container">
@@ -42,25 +45,26 @@
 
         <% if requester_signed_in? %>
             <% if current_requester.already_liked?(o) %>
-                <%= link_to order_like_path(id: o.id, order_id: o.id), method: :delete do %>
-                    <p>いいねを取り消す</p></i><%= o.likes.count %>
+                <%= button_to order_like_path(id: o.id, order_id: o.id), method: :delete do %>
+                    いいねを取り消す
                 <% end %>
             <% else %>
-                <%= link_to order_likes_path(id: o.id, order_id: o.id), method: :post do %>
-                    <p>いいね</p></i><%= o.likes.count %>
+                <%= button_to order_likes_path(id: o.id, order_id: o.id), method: :post do %>
+                    いいね
                 <% end %>
             <% end %>
+        <%= o.likes.count %>
         <% else %>
             <p>いいねされた数</p></i><%= o.likes.count %>
         <% end %>
 
         <% if student_signed_in? %>
             <% if current_student.already_favorited?(o) %>
-                <%= link_to order_favorite_path(id: o.id, order_id: o.id), method: :delete do %>
+                <%= button_to order_favorite_path(id: o.id, order_id: o.id), method: :delete do %>
                     <p>受注を取り消す</p><%= o.favorites.count %>
                 <% end %>
             <% else %>
-                <%= link_to order_favorites_path(id: o.id, order_id: o.id), method: :post do %>
+                <%= button_to order_favorites_path(id: o.id, order_id: o.id), method: :post do %>
                     <p>受注</p><%= o.favorites.count %>
                 <% end %>
             <% end %>
@@ -82,7 +86,7 @@
     <%= student.name %>
     <% if @student_ids.include?(student.id) %>
         <br>
-        <%= link_to "チャットへ", room_path(current_requester.rooms.find_by(student_id: student.id)) %><br>
+        <%= button_to "チャットへ", room_path(current_requester.rooms.find_by(student_id: student.id)) %><br>
     <% else %>
         <%= form_for Room.new do |f| %>
             <%= f.hidden_field :student_id, :value => student.id %>
@@ -95,7 +99,7 @@
     <%= requester.name %>
     <% if @requester_ids.include?(requester.id) %>
         <br>
-        <%= link_to "チャットへ", room_path(current_student.rooms.find_by(requester_id: requester.id)) %><br>
+        <%= button_to "チャットへ", room_path(current_student.rooms.find_by(requester_id: requester.id)) %><br>
     <% else %>
         <%= form_for Room.new do |f| %>
             <%= f.hidden_field :requester_id, :value => requester.id %>
