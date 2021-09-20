@@ -8,6 +8,7 @@ def create
         @message.is_requester = false
     end
     @message.room_id = @room.id
+    
     if @message.save!
         redirect_to room_url(@room)
     else

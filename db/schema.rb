@@ -31,13 +31,20 @@ ActiveRecord::Schema.define(version: 2021_09_15_032405) do
   end
 
   create_table "messages", force: :cascade do |t|
+    t.integer "requester_id", null: false
+    t.integer "student_id", null: false
     t.text "content"
     t.string "image"
+    t.integer "messages_id", null: false
+    t.integer "room_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "room_id", null: false
     t.boolean "is_student"
+    t.boolean "is_requester"
+    t.index ["messages_id"], name: "index_messages_on_messages_id"
+    t.index ["requester_id"], name: "index_messages_on_requester_id"
     t.index ["room_id"], name: "index_messages_on_room_id"
+    t.index ["student_id"], name: "index_messages_on_student_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -97,7 +104,10 @@ ActiveRecord::Schema.define(version: 2021_09_15_032405) do
   add_foreign_key "favorites", "students"
   add_foreign_key "likes", "orders"
   add_foreign_key "likes", "requesters"
+  add_foreign_key "messages", "messages", column: "messages_id"
+  add_foreign_key "messages", "requesters"
   add_foreign_key "messages", "rooms"
+  add_foreign_key "messages", "students"
   add_foreign_key "rooms", "requesters"
   add_foreign_key "rooms", "students"
 end
